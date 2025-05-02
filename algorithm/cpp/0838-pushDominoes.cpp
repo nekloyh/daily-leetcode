@@ -4,70 +4,37 @@ using namespace std;
 
 class Solution {
 public:
-    string processString(int start, int end, char left, char right)
-    {
-        if (start > end) return "";
-
-        int len = end + 1 - start;
-        string str = "";
-
-        if (left == 'R')
-        {
-            if (right == 'L')
-            {
-                str = string(len/2, 'R');
-                if (len % 2) str += '.';
-                str = str + string(len/2, 'L');
-            }
-            else str = string(len, 'R');
-        }
-        else
-        {
-            if (left == '.')
-            {
-                if (right == 'R')
-                {
-                    str = string(len - 1, '.');
-                    str += 'R';
-                }
-                else str = string(len, right);
-            }
-            else
-            {
-                str += 'L';
-                str = str + string(len - 1, right);
-            }
-        }
-
-        return str;
-    }
-
     string pushDominoes(string dominoes)
     {
+        dominoes = 'L' + dominoes + 'R';
         string res = "";
         int n = dominoes.length();
-        int start = 0, end = 0;
+        int start = 0, end = 1;
 
         while (end < n)
         {
-            if (dominoes[end] == '.')
-                end++;
-            else
+            if (dominoes[end] != '.')
             {
-                if (dominoes[end] == 'R' && end != 0)
-                    res = res + processString(start, end - 1, dominoes[start], dominoes[end - 1]);
-                if (dominoes[end] == 'L')
-                    res = res + processString(start, end, dominoes[start], dominoes[end]);
+                if (dominoes[start] == dominoes[end])
+                    res += string(end - start, dominoes[start]);
+                else
+                {
+                    if (dominoes[start] == 'R' && dominoes[end] == 'L') 
+                    {
+                        int len = end + 1 - start;
+                        res += string(len/2, 'R');
+                        if (len%2) res += '.';
+                        res += string(len/2 - 1, 'L');
+                    }
+                    else res += 'L' + string(end - start - 1, '.');
+                }
 
-                start = res.length();
-                end++;
-            }
+                start = end;
+           } 
+           end++;
         }
 
-        if (res.length() < dominoes.length())
-            res = res + processString(start, n - 1, dominoes[start], dominoes[n - 1]);
-
-        return res;
+        return res.substr(1, n - 2);
     }
 };
 
@@ -76,7 +43,7 @@ int main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    string dominoes = ".R...L.";
+    string dominoes = ".L.R...LR..L..";
     //cin >> dominoes;
 
     Solution sol;
