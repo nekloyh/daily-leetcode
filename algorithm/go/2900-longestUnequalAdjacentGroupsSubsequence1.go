@@ -28,7 +28,7 @@ func main() {
 
 	result := getLongestSubsequence(words, groups)
 
-	for i := 0; i < len(result); i++ {
+	for i := range result {
 		fmt.Printf("%s\t", result[i])
 	}
 }
