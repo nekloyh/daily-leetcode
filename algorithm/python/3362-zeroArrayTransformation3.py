@@ -5,8 +5,8 @@ class Solution:
     def maxRemoval(self, nums: List[int], queries: List[List[int]]) -> int:
         n, q = len(nums), len(queries)
         starts = [[] for _ in range(n)]
-        for l, r in queries:
-            starts[l].append(r)
+        for left, right in queries:
+            starts[left].append(right)
         
         avail = []
         active = []
