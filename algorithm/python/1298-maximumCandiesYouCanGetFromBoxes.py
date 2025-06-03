@@ -1,46 +1,23 @@
 from typing import List
-from collections import deque
 
 class Solution:
     def maxCandies(self, status: List[int], candies: List[int], keys: List[List[int]], containedBoxes: List[List[int]], initialBoxes: List[int]) -> int:
-        n = len(status)
-        is_opened = [0] * n
-        has_box = [0] * n
-        
-        q = deque()
-        for box in initialBoxes:
-            has_box[box] = 1
-            q.append(box)
-
-        res = 0
-        changed = True
-        
-        while changed:
-            changed = False
-            for _ in range(len(q)):
-                cur_box = q.popleft()
-                
-                if is_opened[cur_box] or status[cur_box] == 0:
-                    q.append(cur_box)
-                    continue
-
-                is_opened[cur_box] = 1
-                res += candies[cur_box]
-                changed = True
-
-                for box in containedBoxes[cur_box]:
-                    if not has_box[box]:
-                        q.append(box)
-                        has_box[box] = 1
-                    else:
-                        q.append(box)
-
-                for key in keys[cur_box]:
-                    if status[key] == 0:
-                        status[key] = 1
-                        if has_box[key]:
-                            q.append(key)
-        return res
+        q = initialBoxes
+        mykeys = set()
+        ans = 0
+        prev = None
+        while ans != prev:
+            prev = ans
+            nextq = []
+            for curr in q:
+                if curr in mykeys or status[curr]:
+                    ans += candies[curr]
+                    mykeys.update(keys[curr])
+                    nextq.extend(containedBoxes[curr])
+                else:
+                    nextq.append(curr)
+            q = nextq
+        return ans
        
 def main():
     sol = Solution()
