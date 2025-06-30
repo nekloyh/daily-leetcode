@@ -1,7 +1,7 @@
 .idea/
 .vscode/
 
-ws.code-workspace
+leetcode.code-workspace
 *.exe
 *.mod
 
