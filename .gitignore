@@ -1,7 +1,7 @@
 .idea/
 .vscode/
 
-leetcode.code-workspace
+indie-algo.code-workspace
 *.exe
 *.mod
 
